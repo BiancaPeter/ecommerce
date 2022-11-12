@@ -1,8 +1,10 @@
 package com.spring.ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,14 +23,23 @@ public class Product {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name="category_id")
+    @JoinColumn(name = "category_id")
     private Category category;
 
-
-    @OneToMany(mappedBy="product")
+    @OneToMany(mappedBy = "product")
     @JsonIgnore
     List<CartItem> cartItems;
-    public Product(){}
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<WishlistItem> wishlistItems;
+
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<OrderItem> orderItemList;
+
+
+    public Product() {
+    }
 
     public Long getId() {
         return id;
@@ -71,10 +82,35 @@ public class Product {
     }
 
     public List<CartItem> getCartItems() {
+        if (cartItems == null) {
+            cartItems = new ArrayList<>();
+        }
         return cartItems;
     }
 
     public void setCartItems(List<CartItem> cartItems) {
         this.cartItems = cartItems;
+    }
+
+    public List<WishlistItem> getWishlistItems() {
+        if (wishlistItems == null) {
+            wishlistItems = new ArrayList<>();
+        }
+        return wishlistItems;
+    }
+
+    public void setWishlistItems(List<WishlistItem> wishlistItems) {
+        this.wishlistItems = wishlistItems;
+    }
+
+    public List<OrderItem> getOrderItemList() {
+        if(this.orderItemList == null) {
+            this.orderItemList = new ArrayList<>();
+        }
+            return orderItemList;
+    }
+
+    public void setOrderItemList(List<OrderItem> orderItemList) {
+        this.orderItemList = orderItemList;
     }
 }

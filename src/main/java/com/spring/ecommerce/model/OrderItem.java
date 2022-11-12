@@ -5,28 +5,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
 @Entity
-public class CartItem {
+public class OrderItem {
 
     @Id
     @GeneratedValue
     private Long id;
 
-
-    @Column
-    private int quantity;
-
+    private Integer quantity;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name="user_id")
-    private User user;
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name="product_id")
+    @JoinColumn(name = "product_id")
     private Product product;
 
-    public CartItem(){}
+    public OrderItem() {
+    }
 
     public Long getId() {
         return id;
@@ -36,20 +33,20 @@ public class CartItem {
         this.id = id;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    public User getUser() {
-        return user;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public Product getProduct() {

@@ -1,5 +1,6 @@
 package com.spring.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -15,12 +16,20 @@ public class User {
     @Column
     private String name;
 
-    public User (){}
+    public User() {
+    }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Order>orders;
 
 
-    @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore
     List<CartItem> cartItems;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private Wishlist wishlist;
 
     public Long getId() {
         return id;
@@ -44,5 +53,16 @@ public class User {
 
     public void setCartItems(List<CartItem> cartItems) {
         this.cartItems = cartItems;
+    }
+
+    public Wishlist getWishlist() {
+        if (wishlist == null) {
+            wishlist = new Wishlist();
+        }
+        return wishlist;
+    }
+
+    public void setWishlist(Wishlist wishlist) {
+        this.wishlist = wishlist;
     }
 }
