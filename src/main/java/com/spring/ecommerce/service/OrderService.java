@@ -4,6 +4,7 @@ import com.spring.ecommerce.model.CartItem;
 import com.spring.ecommerce.model.Order;
 import com.spring.ecommerce.model.OrderItem;
 import com.spring.ecommerce.model.User;
+import com.spring.ecommerce.repository.CartItemRepository;
 import com.spring.ecommerce.repository.OrderRepository;
 import com.spring.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class OrderService {
     private OrderRepository orderRepository;
     private UserRepository userRepository;
     private CartItemService cartItemService;
+
+    @Autowired
+    private CartItemRepository cartItemRepository;
 
     @Autowired
     public OrderService(OrderRepository orderRepository, UserRepository userRepository, CartItemService cartItemService) {
@@ -50,7 +54,9 @@ public class OrderService {
             newOrder.getOrderItemList().add(orderItem);
         }
         Order savedOrder = orderRepository.save(newOrder);
-        cartItemService.deleteAllUserCartItems(userId);
+        List<CartItem> userCartItems2 = cartItemRepository.findAllByUser(foundUser);
+        userCartItems2.forEach(uci -> cartItemRepository.delete(uci));
+        //cartItemService.deleteAllUserCartItems(userId);
         return savedOrder;
     }
 

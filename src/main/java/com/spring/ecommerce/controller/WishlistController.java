@@ -32,7 +32,7 @@ public class WishlistController {
 
     //TODO: nu se sterge
     @DeleteMapping("/delete")
-    public Wishlist deleteWishlistItemFromUser(@RequestBody AddAndDeleteToWishlistDTO deleteToWishlistDTO) {
-        return wishlistItemService.deleteWishlistItemFromWishlistOfUser(deleteToWishlistDTO);
+    public void deleteWishlistItemFromUser(@RequestBody AddAndDeleteToWishlistDTO deleteToWishlistDTO) {
+         wishlistItemService.deleteWishlistItemFromWishlistOfUser(deleteToWishlistDTO);
     }
 }

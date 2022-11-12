@@ -7,10 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface WishlistItemRepository extends JpaRepository<WishlistItem, Long> {
     List<WishlistItem> findAllByWishlist_User(User user);
 
-    WishlistItem findWishlistItemByWishlist_UserAndProduct(User user, Product product);
+    Optional<WishlistItem> findWishlistItemByWishlist_UserAndProduct(User user, Product product);
 }

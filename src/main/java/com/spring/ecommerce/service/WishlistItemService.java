@@ -52,11 +52,13 @@ public class WishlistItemService {
         return wishlistItemRepository.findAllByWishlist_User(foundedUser);
     }
 
-    public Wishlist deleteWishlistItemFromWishlistOfUser(AddAndDeleteToWishlistDTO deleteToWishlistDTO) {
+    public void deleteWishlistItemFromWishlistOfUser(AddAndDeleteToWishlistDTO deleteToWishlistDTO) {
         Product foundProduct = productRepository.findById(deleteToWishlistDTO.getProductId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found"));
         User foundUser = userRepository.findById(deleteToWishlistDTO.getUserId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
-        WishlistItem wishlistItemToDelete = wishlistItemRepository.findWishlistItemByWishlist_UserAndProduct(foundUser, foundProduct);
-        foundUser.getWishlist().getWishlistItems().remove(wishlistItemToDelete);
-        return wishlistRepository.save(foundUser.getWishlist());
+        WishlistItem wishlistItemToDelete = wishlistItemRepository.findWishlistItemByWishlist_UserAndProduct(foundUser, foundProduct).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "whishlistitem not found"));
+        wishlistItemRepository.delete(wishlistItemToDelete);
+
+        //foundUser.getWishlist().getWishlistItems().remove(wishlistItemToDelete);
+        //return wishlistRepository.save(foundUser.getWishlist());
     }
 }
