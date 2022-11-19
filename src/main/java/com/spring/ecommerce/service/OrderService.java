@@ -41,7 +41,7 @@ public class OrderService {
         //5. salvam order-ul in baza de date
         //6. stergem toate cart-itemurile utilizatorului din baza de date
         User foundUser = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
-        List<CartItem> userCartItems = foundUser.getCartItems();
+        List<CartItem> userCartItems = cartItemRepository.findAllByUser(foundUser);
         Order newOrder = new Order();
         newOrder.setCreatedDate(new Date());
         newOrder.setUser(foundUser);
@@ -54,9 +54,9 @@ public class OrderService {
             newOrder.getOrderItemList().add(orderItem);
         }
         Order savedOrder = orderRepository.save(newOrder);
-        List<CartItem> userCartItems2 = cartItemRepository.findAllByUser(foundUser);
-        userCartItems2.forEach(uci -> cartItemRepository.delete(uci));
-        //cartItemService.deleteAllUserCartItems(userId);
+        //List<CartItem> userCartItems2 = cartItemRepository.findAllByUser(foundUser);
+        //userCartItems2.forEach(uci -> cartItemRepository.delete(uci));
+        cartItemService.deleteAllUserCartItems(userId);
         return savedOrder;
     }
 

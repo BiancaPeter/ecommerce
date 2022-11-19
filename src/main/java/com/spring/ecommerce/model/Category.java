@@ -1,6 +1,7 @@
 package com.spring.ecommerce.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -44,6 +45,9 @@ public class Category {
     }
 
     public List<Product> getProductList() {
+        if(productList ==null) {
+            productList = new ArrayList<>();
+        }
         return productList;
     }
 

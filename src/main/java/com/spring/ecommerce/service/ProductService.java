@@ -29,12 +29,15 @@ public class ProductService {
 
     public Product addProduct(AddProductDTO productDTO, Long categoryId) {
         Product productToBeSaved = new Product();
-        Category foundedCategory = categoryRepository.findById(categoryId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "the order you want to update was not found"));
-        productToBeSaved.setCategory(foundedCategory);
+        Category foundCategory = categoryRepository.findById(categoryId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "the order you want to update was not found"));
+        productToBeSaved.setCategory(foundCategory);
         productToBeSaved.setDescription(productDTO.getDescription());
         productToBeSaved.setName(productDTO.getName());
         productToBeSaved.setPrice(productDTO.getPrice());
-        return productRepository.save(productToBeSaved);
+//        foundCategory.getProductList().add(productToBeSaved);
+//        categoryRepository.save(foundCategory);
+
+       return productRepository.save(productToBeSaved);
     }
 
     public List<Product> getAllProducts() {
