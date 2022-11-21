@@ -1,5 +1,6 @@
 package com.spring.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -22,7 +23,6 @@ public class Product {
     private Double price;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "category_id")
     private Category category;
 
