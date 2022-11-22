@@ -9,6 +9,8 @@ import com.spring.ecommerce.repository.OrderRepository;
 import com.spring.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -33,14 +35,18 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public Order placeOrder(Long userId) {
+    public Order placeOrder() {
         //1.1cautam utilizatorul dupa id
         //1.2luam toate cartItem-urile de la utilizator
         //3.cream cate un orderItem pt fiecare cartItem
         //4. adaugam orderItem-ul la order
         //5. salvam order-ul in baza de date
         //6. stergem toate cart-itemurile utilizatorului din baza de date
-        User foundUser = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User foundUser = userRepository.findUserByUsername(userDetails.getUsername()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
+
+
         List<CartItem> userCartItems = cartItemRepository.findAllByUser(foundUser);
         Order newOrder = new Order();
         newOrder.setCreatedDate(new Date());
@@ -56,7 +62,7 @@ public class OrderService {
         Order savedOrder = orderRepository.save(newOrder);
         //List<CartItem> userCartItems2 = cartItemRepository.findAllByUser(foundUser);
         //userCartItems2.forEach(uci -> cartItemRepository.delete(uci));
-        cartItemService.deleteAllUserCartItems(userId);
+        cartItemService.deleteAllUserCartItems(foundUser.getId());
         return savedOrder;
     }
 

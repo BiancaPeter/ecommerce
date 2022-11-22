@@ -17,9 +17,9 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/add/{userId}")
-    public Order addOrder(@PathVariable Long userId) {
-        return orderService.placeOrder(userId);
+    @PostMapping("/add")
+    public Order addOrder() {
+        return orderService.placeOrder();
     }
 
     @GetMapping("/{userId}")

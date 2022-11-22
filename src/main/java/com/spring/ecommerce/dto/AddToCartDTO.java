@@ -3,12 +3,10 @@ package com.spring.ecommerce.dto;
 public class AddToCartDTO {
 
     private Long productId;
-    private Long userId;
     private Integer quantity;
 
-    public AddToCartDTO(Long productId, Long userId, Integer quantity) {
+    public AddToCartDTO(Long productId, Integer quantity) {
         this.productId = productId;
-        this.userId = userId;
         this.quantity = quantity;
     }
 
@@ -18,14 +16,6 @@ public class AddToCartDTO {
 
     public void setProductId(Long productId) {
         this.productId = productId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Integer getQuantity() {

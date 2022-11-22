@@ -36,6 +36,7 @@ public class JwtSecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/category/**").permitAll()
                 .antMatchers("/authenticate").permitAll()
+                .antMatchers("/register").permitAll()
                 .antMatchers(HttpMethod.POST, "/product/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
